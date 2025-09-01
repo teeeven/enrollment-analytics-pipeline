@@ -1,0 +1,23 @@
+student_id,student_name,email,division,program,level,status
+S001001,John Smith,john.smith@university.edu,Engineering,Computer Science,Undergraduate,Enrolled
+S001002,Maria Garcia,maria.garcia@university.edu,Engineering,Electrical Engineering,Undergraduate,Enrolled
+S001003,David Chen,david.chen@university.edu,Business,Finance,Undergraduate,Enrolled
+S001004,Sarah Johnson,sarah.johnson@university.edu,Arts & Sciences,Biology,Undergraduate,Enrolled
+S001005,Michael Brown,michael.brown@university.edu,Engineering,Mechanical Engineering,Graduate,Enrolled
+S001006,Jessica Lee,jessica.lee@university.edu,Business,Marketing,Undergraduate,Enrolled
+S001007,Robert Wilson,robert.wilson@university.edu,Arts & Sciences,Psychology,Graduate,Enrolled
+S001008,Emily Davis,emily.davis@university.edu,Engineering,Computer Science,Graduate,Enrolled
+S001009,James Miller,james.miller@university.edu,Business,Accounting,Undergraduate,Enrolled
+S001010,Lisa Anderson,lisa.anderson@university.edu,Arts & Sciences,English,Undergraduate,Enrolled
+S001011,Christopher Taylor,chris.taylor@university.edu,Engineering,Civil Engineering,Undergraduate,Enrolled
+S001012,Amanda Martinez,amanda.martinez@university.edu,Business,Management,Graduate,Enrolled
+S001013,Daniel Thompson,daniel.thompson@university.edu,Arts & Sciences,Chemistry,Graduate,Enrolled
+S001014,Jennifer White,jennifer.white@university.edu,Engineering,Biomedical Engineering,Undergraduate,Enrolled
+S001015,Matthew Harris,matthew.harris@university.edu,Business,Economics,Undergraduate,Enrolled
+S001016,Rachel Clark,rachel.clark@university.edu,Arts & Sciences,Mathematics,Graduate,Enrolled
+S001017,Andrew Lewis,andrew.lewis@university.edu,Engineering,Chemical Engineering,Undergraduate,Enrolled
+S001018,Nicole Walker,nicole.walker@university.edu,Business,Information Systems,Undergraduate,Enrolled
+S001019,Kevin Hall,kevin.hall@university.edu,Arts & Sciences,Physics,Graduate,Enrolled
+S001020,Stephanie Allen,stephanie.allen@university.edu,Engineering,Industrial Engineering,Undergraduate,Enrolled
+S001021,Brandon Moore,brandon.moore@university.edu,Business,Finance,Undergraduate,Enrolled
+S001022,Olivia Young,olivia.young@university.edu,Arts & Sciences,Biology,Graduate,Enrolled

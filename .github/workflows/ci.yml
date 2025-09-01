@@ -1,0 +1,164 @@
+name: Enrollment Analytics Pipeline CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        
+    - name: Lint with black
+      run: |
+        black --check src/ tests/
+        
+    - name: Sort imports with isort
+      run: |
+        isort --check-only src/ tests/
+        
+    - name: Type check with mypy
+      run: |
+        mypy src/
+        
+    - name: Run tests
+      run: |
+        pytest tests/ -v --cov=src --cov-report=xml
+        
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+
+  validate-config:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyyaml pydantic
+        
+    - name: Validate YAML configuration
+      run: |
+        python -c "
+        import yaml
+        import sys
+        try:
+            with open('config/enrollment_config.yaml') as f:
+                yaml.safe_load(f)
+            print('✅ YAML configuration is valid')
+        except Exception as e:
+            print(f'❌ YAML validation failed: {e}')
+            sys.exit(1)
+        "
+        
+    - name: Validate SQL queries
+      run: |
+        find sql/ -name "*.sql" -type f -exec python -c "
+        import sys
+        filename = sys.argv[1]
+        try:
+            with open(filename, 'r') as f:
+                content = f.read()
+            if not content.strip():
+                print(f'❌ Empty SQL file: {filename}')
+                sys.exit(1)
+            print(f'✅ SQL file valid: {filename}')
+        except Exception as e:
+            print(f'❌ SQL validation failed for {filename}: {e}')
+            sys.exit(1)
+        " {} \;
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Run security scan with bandit
+      run: |
+        pip install bandit[toml]
+        bandit -r src/ -f json -o bandit-report.json || true
+        
+    - name: Upload security scan results
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-scan-results
+        path: bandit-report.json
+
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Check README links
+      run: |
+        python -c "
+        import re
+        with open('README.md') as f:
+            content = f.read()
+        
+        # Check for broken internal links
+        internal_links = re.findall(r'\[.*?\]\(((?!http)[^)]+)\)', content)
+        for link in internal_links:
+            if not link.startswith('#'):  # Skip anchor links
+                try:
+                    with open(link):
+                        pass
+                    print(f'✅ Link valid: {link}')
+                except FileNotFoundError:
+                    print(f'❌ Broken link: {link}')
+        "
+        
+    - name: Validate example data
+      run: |
+        python -c "
+        import pandas as pd
+        import os
+        
+        # Check sample data files exist and are valid
+        sample_files = [
+            'examples/sample_data/enrollment_metrics.csv',
+            'examples/sample_data/enrollment_snapshot_20241202.csv'
+        ]
+        
+        for file_path in sample_files:
+            if os.path.exists(file_path):
+                try:
+                    df = pd.read_csv(file_path)
+                    print(f'✅ Sample data valid: {file_path} ({len(df)} rows)')
+                except Exception as e:
+                    print(f'❌ Sample data invalid: {file_path} - {e}')
+            else:
+                print(f'❌ Sample data missing: {file_path}')
+        "
