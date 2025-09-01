@@ -331,13 +331,6 @@ pip install matplotlib seaborn
 ls -la /opt/airflow/data/enrollment/reports/
 ```
 
-## 📚 Additional Resources
-
-- **Time-Series Analysis**: [ARIMA Forecasting Tutorial](docs/forecasting_guide.md)
-- **Power BI Integration**: [BI Integration Guide](docs/powerbi_integration.md)  
-- **Custom Analytics**: [Analytics Extension Guide](docs/custom_analytics.md)
-- **Production Deployment**: [Operations Guide](docs/operations_guide.md)
-
 ## 🌐 Cross-Industry Applications
 
 While designed for enrollment analytics, this pipeline architecture demonstrates **transferable patterns** that apply across industries. The core framework of time-series monitoring, delta detection, and automated reporting creates value in numerous business contexts:
@@ -465,5 +458,3 @@ This pipeline is designed to be extensible and customizable:
 MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
-
-**Portfolio Note**: This pipeline demonstrates advanced **analytics engineering** capabilities, combining production data engineering with statistical analysis and business intelligence. It showcases skills in time-series processing, operational intelligence, and stakeholder communication - key competencies for senior data roles in higher education and beyond.
